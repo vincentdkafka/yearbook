@@ -111,7 +111,7 @@ export default function BookPage() {
           <EntryList entries={entries} variant="cute" />
         </div>
 
-        {/* Removed Hidden PDF Capture Elements */}
+        
       </div>
     </div>
   )
