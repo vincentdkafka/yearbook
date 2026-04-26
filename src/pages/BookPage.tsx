@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import EntryForm from '../components/EntryForm'
 import EntryList from '../components/EntryList'
-import EntryCard from '../components/EntryCard'
+
 import html2canvas from 'html2canvas'
 
 type Book = { id: string; title: string; slug: string; is_open: boolean }
