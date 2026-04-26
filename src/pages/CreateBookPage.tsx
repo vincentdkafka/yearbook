@@ -33,7 +33,7 @@ export default function CreateBookPage() {
             Create a photobook and share it with everyone!
           </p>
 
-          <label className="block text-sm font-bold text-gray-700 mb-1" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>Yearbook title</label>
+          <label className="block text-sm font-bold text-gray-700 mb-1" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>Photobook title</label>
           <input
             className="cute-input"
             placeholder="e.g. Class of 2025"
@@ -48,7 +48,7 @@ export default function CreateBookPage() {
             disabled={loading}
             className="cute-btn"
           >
-            {loading ? 'Creating...' : 'Create Yearbook →'}
+            {loading ? 'Creating...' : 'Create Photobook →'}
           </button>
         </div>
       </div>
