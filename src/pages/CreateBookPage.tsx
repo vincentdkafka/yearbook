@@ -53,6 +53,15 @@ export default function CreateBookPage() {
         </div>
       </div>
 
+      <div className="mt-8 mb-4 p-4 bg-yellow-50 border-yellow-200" style={{ maxWidth: '20rem', border: '2px dashed #fef08a', borderRadius: '16px' }}>
+        <p className="text-yellow-700 font-bold mb-2 text-center" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: '1.2rem' }}>💡 Quick Guide</p>
+        <div className="flex flex-col gap-2 text-yellow-800 font-handwritten" style={{ fontSize: '1rem' }}>
+          <p>1. Name your book & share the link</p>
+          <p>2. Let friends add photos & notes</p>
+          <p>3. Download the PDF when ready!</p>
+        </div>
+      </div>
+
       <div className="mt-auto py-4 font-handwritten text-gray-500 text-center" style={{ fontSize: "1.1rem" }}>
         created with ❤️ and caffeine by <span className="text-purple-600 font-bold">harshkurware22</span>
       </div>
