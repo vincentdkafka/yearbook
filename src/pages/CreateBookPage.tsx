@@ -25,35 +25,37 @@ export default function CreateBookPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="cute-container">
-        <h1 className="cute-header">📚 Yearbook App</h1>
-        <p className="text-gray-500 mb-6 text-center" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>
-          Create a yearbook and share it with everyone!
-        </p>
+    <div className="min-h-screen flex flex-col items-center p-4">
+      <div className="flex-grow flex flex-col items-center justify-center w-full">
+        <div className="cute-container">
+          <h1 className="cute-header">📚 Photobook App</h1>
+          <p className="text-gray-500 mb-6 text-center" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>
+            Create a photobook and share it with everyone!
+          </p>
 
-        <label className="block text-sm font-bold text-gray-700 mb-1" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>Yearbook title</label>
-        <input
-          className="cute-input"
-          placeholder="e.g. Class of 2025"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
+          <label className="block text-sm font-bold text-gray-700 mb-1" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>Yearbook title</label>
+          <input
+            className="cute-input"
+            placeholder="e.g. Class of 2025"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
 
-        {error && <p className="text-red-500 text-sm mb-3 font-bold">{error}</p>}
+          {error && <p className="text-red-500 text-sm mb-3 font-bold">{error}</p>}
 
-        <button
-          onClick={handleCreate}
-          disabled={loading}
-          className="cute-btn"
-        >
-          {loading ? 'Creating...' : 'Create Yearbook →'}
-        </button>
-
+          <button
+            onClick={handleCreate}
+            disabled={loading}
+            className="cute-btn"
+          >
+            {loading ? 'Creating...' : 'Create Yearbook →'}
+          </button>
+        </div>
       </div>
-        {/* <div>
-          created with love by harshkurware22
-        </div> */}
+
+      <div className="mt-auto py-4 font-handwritten text-gray-500 text-center" style={{ fontSize: "1.1rem" }}>
+        created with ❤️ and caffeine by <span className="text-purple-600 font-bold">harshkurware22</span>
+      </div>
     </div>
   )
 }
