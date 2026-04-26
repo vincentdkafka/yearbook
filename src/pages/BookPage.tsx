@@ -153,7 +153,7 @@ export default function BookPage() {
               className="cute-btn"
               style={{ fontSize: "1rem", padding: "0.5rem 1rem", flex: 1 }}
             >
-              {isGenerating ? "⌛ Saving..." : "📸 Export Image"}
+              {isGenerating ? "⌛ Saving..." : "📸 Export album"}
             </button>
           </div>
         </div>
