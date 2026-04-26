@@ -31,13 +31,22 @@ body {
 /* Base Utility Classes replacing Tailwind */
 .min-h-screen { min-height: 100vh; }
 .flex { display: flex; }
+.flex-row { flex-direction: row; }
 .flex-col { flex-direction: column; }
+@media (min-width: 640px) {
+  .sm\:flex-row { flex-direction: row; }
+  .sm\:flex-col { flex-direction: column; }
+}
 .items-center { align-items: center; }
 .justify-center { justify-content: center; }
 .gap-4 { gap: 1rem; }
 .p-4 { padding: 1rem; }
 .p-6 { padding: 1.5rem; }
 .p-8 { padding: 2rem; }
+@media (max-width: 640px) {
+  .p-4 { padding: 0.75rem; }
+  .p-8 { padding: 1.25rem; }
+}
 .w-full { width: 100%; }
 .max-w-md { max-w: 28rem; }
 .max-w-5xl { max-width: 64rem; }
@@ -90,6 +99,14 @@ body {
   width: 100%;
   max-width: 28rem;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .cute-container {
+    padding: 1.25rem;
+    box-shadow: 4px 4px 0px var(--ink-color);
+  }
 }
 
 .cute-header {
@@ -98,6 +115,13 @@ body {
   color: var(--ink-color);
   margin-bottom: 0.5rem;
   text-align: center;
+  line-height: 1.1;
+}
+
+@media (max-width: 640px) {
+  .cute-header {
+    font-size: 2rem;
+  }
 }
 
 .cute-input {
@@ -283,6 +307,16 @@ body {
 .entries-wrapper {
   margin-top: 2rem;
   padding-top: 1rem;
+}
+
+.export-container {
+  background-color: var(--bg-color);
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding: 2rem;
+  border-radius: 12px;
 }
 
 .no-print {
