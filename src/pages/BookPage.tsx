@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import EntryForm from '../components/EntryForm'
 import EntryList from '../components/EntryList'
+import EntryCard from '../components/EntryCard'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 
 type Book = { id: string; title: string; slug: string; is_open: boolean }
 type Entry = { id: string; name: string; message: string; image_url: string; created_at: string }
@@ -13,6 +16,9 @@ export default function BookPage() {
   const [entries, setEntries] = useState<Entry[]>([])
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const printRef = useRef<HTMLDivElement>(null)
 
   const loadBook = async () => {
     const { data } = await supabase.from('books').select('*').eq('slug', slug).single()
@@ -28,30 +34,120 @@ export default function BookPage() {
     setEntries(data || [])
   }
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleDownloadPDF = async () => {
+    if (entries.length === 0) return
+    setIsGenerating(true)
+    try {
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = pdf.internal.pageSize.getHeight()
+
+      // 1. Title Page
+      if (printRef.current) {
+        const titleCanvas = await html2canvas(printRef.current, { 
+          scale: 1.5, 
+          useCORS: true, 
+          backgroundColor: '#ffffff' 
+        })
+        const titleImgData = titleCanvas.toDataURL('image/jpeg', 0.8)
+        pdf.addImage(titleImgData, 'JPEG', 0, 0, pdfWidth, (titleCanvas.height * pdfWidth) / titleCanvas.width)
+      }
+
+      // 2. Each Entry Page
+      const entryElements = document.querySelectorAll('.pdf-entry-capture')
+      for (let i = 0; i < entryElements.length; i++) {
+        pdf.addPage()
+        const element = entryElements[i] as HTMLElement
+        const canvas = await html2canvas(element, { 
+          scale: 1.5, 
+          useCORS: true, 
+          backgroundColor: '#ffffff' 
+        })
+        const imgData = canvas.toDataURL('image/jpeg', 0.8)
+        
+        const imgWidth = pdfWidth * 0.85
+        const imgHeight = (canvas.height * imgWidth) / canvas.width
+        const xOffset = (pdfWidth - imgWidth) / 2
+        const yOffset = (pdfHeight - imgHeight) / 2
+        
+        pdf.addImage(imgData, 'JPEG', xOffset, yOffset, imgWidth, imgHeight)
+      }
+
+      pdf.save(`${book?.title || 'yearbook'}.pdf`)
+    } catch (err) {
+      console.error('PDF Generation failed:', err)
+      alert('Failed to generate PDF. Check console for details.')
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
   useEffect(() => { loadBook() }, [slug])
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-400">Loading...</div>
-  if (notFound) return <div className="min-h-screen flex items-center justify-center text-gray-500">Yearbook not found 😕</div>
+  if (loading) return <div className="min-h-screen flex items-center justify-center font-handwritten text-xl text-gray-500">Loading...</div>
+  if (notFound) return <div className="min-h-screen flex items-center justify-center font-handwritten text-xl text-red-500">Yearbook not found 😕</div>
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">📚 {book!.title}</h1>
-          <p className="text-gray-400 mt-1 text-sm">Share this link: <span className="font-mono text-purple-600">{window.location.href}</span></p>
+        {/* Main Header */}
+        <div className="mb-8 text-center cute-container no-print" style={{maxWidth: "100%", padding: "1.5rem", marginBottom: "2rem", backgroundColor: "var(--pastel-pink)"}}>
+          <h1 className="cute-header" style={{marginBottom: "0"}}>📚 {book!.title}</h1>
+          <p className="mt-1 font-handwritten" style={{fontSize: "1.2rem", color: "#444"}}>
+            Share this link: <span className="font-mono bg-white px-2 py-1" style={{borderRadius: "4px", border: "1px solid var(--ink-color)"}}>{window.location.href}</span>
+          </p>
+          
+          <div className="flex justify-center gap-4 mt-4">
+            <button onClick={handleCopyLink} className="cute-btn" style={{maxWidth: "180px", fontSize: "1rem", padding: "0.5rem 1rem", backgroundColor: "var(--pastel-yellow)"}}>
+              {copied ? '✅ Copied!' : '🔗 Copy Link'}
+            </button>
+            <button 
+              onClick={handleDownloadPDF} 
+              disabled={isGenerating || entries.length === 0}
+              className="cute-btn" 
+              style={{maxWidth: "180px", fontSize: "1rem", padding: "0.5rem 1rem"}}
+            >
+              {isGenerating ? '⌛ Saving...' : '📥 Export PDF'}
+            </button>
+          </div>
         </div>
 
-        {book!.is_open ? (
-          <div className="mb-10">
+        {/* Entry Form Section */}
+        {book!.is_open && (
+          <div className="mb-10 cute-container no-print" style={{maxWidth: "100%"}}>
             <EntryForm bookId={book!.id} onSubmit={() => loadEntries(book!.id)} />
-          </div>
-        ) : (
-          <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-xl p-4 mb-10">
-            Submissions are closed for this yearbook.
           </div>
         )}
 
-        <EntryList entries={entries} />
+        {/* Regular View */}
+        <div className="no-print entries-wrapper">
+          <h2 className="cute-header" style={{textAlign: 'left', fontSize: '2rem'}}>Submissions</h2>
+          <EntryList entries={entries} variant="cute" />
+        </div>
+
+        {/* Hidden Elements for PDF Capture */}
+        <div style={{ position: 'absolute', left: '-9999px', top: 0, width: '800px' }}>
+          {/* Title Page Capture */}
+          <div ref={printRef} style={{ padding: '60px', backgroundColor: 'white', textAlign: 'center' }}>
+            <h1 className="cute-header" style={{ fontSize: '6rem', marginBottom: '20px' }}>{book!.title}</h1>
+            <div style={{ width: '200px', height: '10px', backgroundColor: 'var(--ink-color)', margin: '0 auto 40px auto' }}></div>
+            <p className="font-handwritten" style={{ fontSize: '2rem' }}>Digital Yearbook Archive</p>
+            <p style={{ marginTop: '100px', fontSize: '1.2rem', color: '#888' }}>Total Entries: {entries.length}</p>
+          </div>
+
+          {/* Individual Entry Captures */}
+          {entries.map(entry => (
+            <div key={entry.id} className="pdf-entry-capture" style={{ padding: '40px', backgroundColor: 'white', width: '600px' }}>
+              <EntryCard entry={entry} variant="cute" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

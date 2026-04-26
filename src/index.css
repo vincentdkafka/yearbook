@@ -1,3 +1,303 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  --pastel-pink: #ffd1dc;
+  --pastel-blue: #a2cffe;
+  --pastel-yellow: #fdfd96;
+  --pastel-mint: #b2fba5;
+  --pastel-purple: #cda434; /* Soft Gold/Purple accent */
+  --ink-color: #2b2b2b;
+  --bg-color: #fdfcf0;
+  --grid-color: #e0e0e0;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink-color);
+  background-color: var(--bg-color);
+  /* Notebook grid background */
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 20px 20px;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Handwritten Font Helper */
+.font-handwritten {
+  font-family: 'Patrick Hand', cursive;
+}
+
+/* Base Utility Classes replacing Tailwind */
+.min-h-screen { min-height: 100vh; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-4 { gap: 1rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.w-full { width: 100%; }
+.max-w-md { max-w: 28rem; }
+.max-w-5xl { max-width: 64rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-10 { margin-bottom: 2.5rem; }
+.mt-1 { margin-top: 0.25rem; }
+.text-center { text-align: center; }
+.text-sm { font-size: 0.875rem; }
+.text-xl { font-size: 1.25rem; }
+.text-3xl { font-size: 1.875rem; }
+.text-4xl { font-size: 2.25rem; }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+.text-gray-800 { color: #1f2937; }
+.text-gray-700 { color: #374151; }
+.text-gray-500 { color: #6b7280; }
+.text-gray-400 { color: #9ca3af; }
+.text-red-500 { color: #ef4444; }
+.text-purple-600 { color: #9333ea; }
+.text-yellow-700 { color: #a16207; }
+.bg-yellow-50 { background-color: #fefce8; }
+.border-yellow-200 { border-color: #fef08a; }
+.font-mono { font-family: monospace; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+
+/* Grid Layouts */
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.gap-6 { gap: 1.5rem; }
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Cute & Nostalgic Component Classes */
+
+.cute-container {
+  background-color: white;
+  border: 3px solid var(--ink-color);
+  border-radius: 16px;
+  box-shadow: 6px 6px 0px var(--ink-color);
+  padding: 2rem;
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.cute-header {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 2.5rem;
+  color: var(--ink-color);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.cute-input {
+  width: 100%;
+  border: 2px solid var(--ink-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  box-shadow: 2px 2px 0px var(--ink-color);
+}
+.cute-input:focus {
+  outline: none;
+  border-color: #9333ea;
+  box-shadow: 4px 4px 0px #9333ea;
+  transform: translate(-2px, -2px);
+}
+
+.cute-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.cute-btn {
+  width: 100%;
+  background-color: var(--pastel-pink);
+  color: var(--ink-color);
+  border: 3px solid var(--ink-color);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--ink-color);
+  transition: all 0.1s ease-in-out;
+}
+.cute-btn:hover:not(:disabled) {
+  background-color: #ffb6c1;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--ink-color);
+}
+.cute-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--ink-color);
+}
+.cute-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: 2px 2px 0px var(--ink-color);
+  transform: translate(2px, 2px);
+}
+
+.cute-card {
+  background-color: white;
+  border: 3px solid var(--ink-color);
+  border-radius: 12px;
+  box-shadow: 6px 6px 0px var(--ink-color);
+  padding: 1rem;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.cute-card:hover {
+  transform: rotate(-1deg) scale(1.02);
+}
+
+.cute-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border: 2px solid var(--ink-color);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: #f3f4f6;
+}
+
+.cute-message {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  flex-grow: 1;
+  color: #333;
+}
+
+.cute-author {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 1rem;
+  display: block;
+}
+
+.cute-date {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.cute-banner {
+  background-color: var(--pastel-yellow);
+  border: 3px solid var(--ink-color);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0px var(--ink-color);
+  padding: 1rem;
+  margin-bottom: 2.5rem;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* Yearbook Specific Styles for PDF/Print */
+.yearbook-print-view {
+  background-color: white;
+  padding: 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.yearbook-title-page {
+  text-align: center;
+  border-bottom: 4px solid var(--ink-color);
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+.yearbook-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .yearbook-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Formal Yearbook Card Style */
+.yearbook-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.yearbook-photo-frame {
+  border: 4px solid var(--ink-color);
+  padding: 4px;
+  background: white;
+  margin-bottom: 12px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+}
+
+.yearbook-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.yearbook-name {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  color: var(--ink-color);
+}
+
+.yearbook-quote {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  color: #666;
+  margin-top: 4px;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Fix for first card spacing and general layout */
+.entries-wrapper {
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+
+.no-print {
+  display: block;
+}
+
+@media print {
+  body {
+    background: white !important;
+    background-image: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .yearbook-print-view {
+    padding: 0;
+  }
+}
