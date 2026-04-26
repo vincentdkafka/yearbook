@@ -1,70 +1,119 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { supabase } from '../supabaseClient'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
 
 export default function CreateBookPage() {
-  const [title, setTitle] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleCreate = async () => {
-    if (!title.trim()) { setError('Please enter a title'); return }
-    setLoading(true)
-    setError('')
+    if (!title.trim()) {
+      setError("Please enter a title");
+      return;
+    }
+    setLoading(true);
+    setError("");
 
-    const slug = Math.random().toString(36).substring(2, 10)
+    const slug = Math.random().toString(36).substring(2, 10);
 
     const { error: dbError } = await supabase
-      .from('books')
-      .insert([{ title, slug }])
+      .from("books")
+      .insert([{ title, slug }]);
 
-    if (dbError) { setError('Something went wrong. Try again.'); setLoading(false); return }
+    if (dbError) {
+      setError("Something went wrong. Try again.");
+      setLoading(false);
+      return;
+    }
 
-    navigate(`/book/${slug}`)
-  }
+    navigate(`/book/${slug}`);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center p-4">
       <div className="flex-grow flex flex-col items-center justify-center w-full">
         <div className="cute-container">
           <h1 className="cute-header">📚 Photobook App</h1>
-          <p className="text-gray-500 mb-6 text-center" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>
+          <p
+            className="text-gray-500 mb-6 text-center"
+            style={{
+              fontFamily: "'Patrick Hand', cursive",
+              fontSize: "1.2rem",
+            }}
+          >
             Create a photobook and share it with everyone!
           </p>
 
-          <label className="block text-sm font-bold text-gray-700 mb-1" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}>Photobook title</label>
+          <label
+            className="block text-sm font-bold text-gray-700 mb-1"
+            style={{
+              fontFamily: "'Patrick Hand', cursive",
+              fontSize: "1.2rem",
+            }}
+          >
+            Photobook title
+          </label>
           <input
             className="cute-input"
             placeholder="e.g. Class of 2025"
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
 
-          {error && <p className="text-red-500 text-sm mb-3 font-bold">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm mb-3 font-bold">{error}</p>
+          )}
 
           <button
             onClick={handleCreate}
             disabled={loading}
             className="cute-btn"
           >
-            {loading ? 'Creating...' : 'Create Photobook →'}
+            {loading ? "Creating..." : "Create Photobook →"}
           </button>
         </div>
       </div>
 
-      <div className="mt-8 mb-4 p-4 bg-yellow-50 border-yellow-200" style={{ maxWidth: '20rem', border: '2px dashed #fef08a', borderRadius: '16px' }}>
-        <p className="text-yellow-700 font-bold mb-2 text-center" style={{ fontFamily: "'Patrick Hand', cursive", fontSize: '1.2rem' }}>💡 Quick Guide</p>
-        <div className="flex flex-col gap-2 text-yellow-800 font-handwritten" style={{ fontSize: '1rem' }}>
+      <div
+        className="mt-8 mb-4 p-4 bg-yellow-50 border-yellow-200"
+        style={{
+          maxWidth: "20rem",
+          border: "2px dashed #fef08a",
+          borderRadius: "16px",
+        }}
+      >
+        <p
+          className="text-yellow-700 font-bold mb-2 text-center"
+          style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.2rem" }}
+        >
+          💡 Quick Guide
+        </p>
+        <div
+          className="flex flex-col gap-2 text-yellow-800 font-handwritten"
+          style={{ fontSize: "1rem" }}
+        >
           <p>1. Name your book & share the link</p>
           <p>2. Let friends add photos & notes</p>
           <p>3. Download the PDF when ready!</p>
         </div>
       </div>
 
-      <div className="mt-auto py-4 font-handwritten text-gray-500 text-center" style={{ fontSize: "1.1rem" }}>
-        created with ❤️ and caffeine by <span className="text-purple-600 font-bold">harshkurware22</span>
+      <div
+        className="mt-auto py-4 font-handwritten text-gray-500 text-center"
+        style={{ fontSize: "1.1rem" }}
+      >
+        created with ❤️ and caffeine by{" "}
+        <a
+          href="https://www.instagram.com/harshkurware22/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-purple-600 font-bold"
+        >
+          harshkurware22
+        </a>
       </div>
     </div>
-  )
+  );
 }
